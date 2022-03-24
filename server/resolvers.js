@@ -21,6 +21,20 @@ const Job = {
 const Company = {
     jobs:(company)=>db.jobs.list()
     .filter((job)=>job.companyId == company.id)
+}   
+
+
+const Mutation = {
+    createJob : (root , {input}, {user})=>{
+
+        
+       if(!user){
+           throw new Error("Unauthorized");
+       }
+        const id =  db.jobs.create({...input,companyId:user.companyId});
+        return db.jobs.get(id);
+        
+    }
 }
 
-module.exports = {Query ,Company, Job};
+module.exports = {Query ,Company, Job,Mutation};
